@@ -9,6 +9,11 @@ on:
     types: [ created ]
   workflow_dispatch:  # Manual trigger
 
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
 jobs:
   # Job untuk validasi Frontend
   validate-frontend:
@@ -26,7 +31,14 @@ jobs:
       
       - name: Install dependencies
         working-directory: .
-        run: npm ci
+        run: |
+          if [ -f package-lock.json ]; then
+            echo "Found package-lock.json, using npm ci"
+            npm ci
+          else
+            echo "No package-lock.json found, using npm install"
+            npm install
+          fi
       
       - name: Validate HTML
         run: npm run validate:html -- frontend/index.html
@@ -56,7 +68,14 @@ jobs:
       
       - name: Install backend dependencies
         working-directory: ./backend
-        run: npm ci
+        run: |
+          if [ -f package-lock.json ]; then
+            echo "Found package-lock.json in backend, using npm ci"
+            npm ci
+          else
+            echo "No package-lock.json found in backend, using npm install"
+            npm install
+          fi
       
       - name: Check backend syntax
         working-directory: ./backend
@@ -78,7 +97,14 @@ jobs:
           cache: 'npm'
       
       - name: Install dependencies
-        run: npm ci
+        run: |
+          if [ -f package-lock.json ]; then
+            echo "Found package-lock.json, using npm ci"
+            npm ci
+          else
+            echo "No package-lock.json found, using npm install"
+            npm install
+          fi
       
       - name: Run unit tests
         run: npm test
@@ -139,7 +165,14 @@ jobs:
           cache: 'npm'
       
       - name: Install dependencies
-        run: npm ci
+        run: |
+          if [ -f package-lock.json ]; then
+            echo "Found package-lock.json, using npm ci"
+            npm ci
+          else
+            echo "No package-lock.json found, using npm install"
+            npm install
+          fi
       
       - name: Run Lighthouse CI
         run: npm run lighthouse
@@ -187,6 +220,9 @@ jobs:
   security:
     name: Security Scan
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     
     steps:
       - name: Checkout code
@@ -201,7 +237,7 @@ jobs:
           output: 'trivy-results.sarif'
       
       - name: Upload Trivy results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: 'trivy-results.sarif'
