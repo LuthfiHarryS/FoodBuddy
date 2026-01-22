@@ -1,0 +1,20 @@
+{
+  "defaults": {
+    "timeout": 10000,
+    "wait": 1000,
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+    },
+    "standard": "WCAG2AA",
+    "ignore": [
+      "notice",
+      "warning"
+    ]
+  },
+  "urls": [
+    {
+      "url": "http://localhost:3000/index.html",
+      "name": "FoodBuddy Main Page"
+    }
+  ]
+}

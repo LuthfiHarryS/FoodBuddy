@@ -1,0 +1,57 @@
+{
+  "name": "foodbuddy",
+  "version": "1.0.0",
+  "description": "FoodBuddy - Aplikasi rekomendasi makanan berdasarkan waktu dan cuaca",
+  "main": "frontend/index.html",
+  "scripts": {
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
+    "test:a11y": "pa11y-ci",
+    "lint:js": "eslint frontend/script.js --format json --output-file eslint-report.json",
+    "lint:js:fix": "eslint frontend/script.js --fix",
+    "validate:html": "html-validate frontend/index.html",
+    "validate:css": "stylelint frontend/styles.css --formatter json --output-file stylelint-report.json",
+    "check:links": "linkinator frontend/index.html --recurse --silent",
+    "lighthouse": "lhci autorun",
+    "build": "echo 'No build step required for static site'",
+    "start:frontend": "npx serve frontend -p 8000",
+    "start:backend": "cd backend && npm start",
+    "dev:backend": "cd backend && npm run dev"
+  },
+  "keywords": [
+    "food",
+    "recommendation",
+    "weather",
+    "chatbot"
+  ],
+  "author": "FoodBuddy Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@lhci/cli": "^0.12.0",
+    "pa11y-ci": "^3.0.0",
+    "eslint": "^8.57.0",
+    "html-validate": "^8.7.3",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "linkinator": "^5.0.1",
+    "stylelint": "^16.2.1",
+    "stylelint-config-standard": "^36.0.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "collectCoverageFrom": [
+      "frontend/script.js"
+    ],
+    "testMatch": [
+      "**/frontend/**/*.test.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 50,
+        "functions": 50,
+        "lines": 50,
+        "statements": 50
+      }
+    }
+  }
+}

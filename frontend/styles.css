@@ -26,7 +26,6 @@
 
     /* Layout container */
     .app-container {
-        
         flex: 1;
         display: grid;
         grid-template-columns: 1fr 1.5fr;
@@ -37,7 +36,6 @@
         overflow: hidden;
         box-shadow: 0 8px 32px rgb(0 0 0 / 0.3);
         background: #05094e;
-        overflow: hidden;
     }
 
     /* Left panel */
@@ -56,11 +54,7 @@
         background-position: center;
         background-repeat: no-repeat;
         filter: brightness(0.85);
-        -webkit-border-radius: 24px 0 0 24px;
-        -moz-border-radius: 24px 0 0 24px;
-        -ms-border-radius: 24px 0 0 24px;
-        -o-border-radius: 24px 0 0 24px;
-}
+    }
 
     .left-panel::before {
         content: "";
@@ -434,6 +428,7 @@
     flex-direction: column;
     gap: 10px;
     padding: 16px;
+    margin-top: 20px;
 }
 
 /* Bubble umum */
@@ -490,4 +485,41 @@
 .chat-box p {
     margin: 5px 0;
     line-height: 1.5;
+}
+
+/* Loading dots animation */
+.loading-dots {
+    display: flex;
+    padding: 10px 0;
+}
+
+.loading-dots .dot {
+    width: 8px;
+    height: 8px;
+    margin: 0 4px;
+    background-color: #888;
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out;
+}
+
+.loading-dots .dot:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.loading-dots .dot:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+    0%, 80%, 100% {
+        transform: scale(0);
+    }
+    40% {
+        transform: scale(1);
+    }
+}
+
+/* Temperature text */
+#temperature-text {
+    font-size: 38px;
 }

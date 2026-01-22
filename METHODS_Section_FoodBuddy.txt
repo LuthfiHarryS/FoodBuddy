@@ -1,0 +1,123 @@
+METHODS
+
+Bagian ini menjelaskan metodologi DevOps yang diterapkan pada proyek FoodBuddy. Penerapan DevOps dilakukan untuk mengoptimalkan proses pengembangan, pengujian, dan deployment aplikasi web berbasis frontend, sehingga meningkatkan kualitas perangkat lunak, kecepatan pengembangan, dan kolaborasi tim.
+
+A. DevOps Methods and Tools
+
+Proyek FoodBuddy mengadopsi pendekatan DevOps yang mengintegrasikan praktik Continuous Integration (CI) dan Continuous Deployment (CD) untuk mengotomatisasi siklus hidup pengembangan perangkat lunak. Konsep DevOps yang diterapkan berfokus pada integrasi berkelanjutan antara tim pengembangan dan operasi, dengan prinsip utama yaitu otomatisasi, kolaborasi, dan feedback loop yang cepat.
+
+1) Version Control System
+
+Git dan GitHub digunakan sebagai version control system (VCS) utama untuk mengelola source code proyek FoodBuddy. Pemilihan Git didasarkan pada kemampuan distributed version control yang memungkinkan kolaborasi paralel antar developer tanpa konflik yang signifikan. GitHub dipilih sebagai platform hosting repository karena menyediakan fitur-fitur DevOps terintegrasi seperti GitHub Actions untuk CI/CD, issue tracking, pull request management, dan code review workflow. Repository FoodBuddy di https://github.com/LuthfiHarryS/FoodBuddy menggunakan branch strategy dengan model Git Flow yang terdiri dari branch utama (main), branch development, dan feature branches untuk isolasi fitur baru.
+
+Struktur repository FoodBuddy mencakup file-file utama yaitu main.html sebagai entry point aplikasi, script.js untuk logika aplikasi, dan styles.css untuk styling. Folder Assets berisi resource statis seperti gambar, sedangkan folder dokumen menyimpan dokumentasi SDLC (SRS, SDD, SPMP, Test Plan). Penggunaan Git memungkinkan tracking perubahan kode, rollback ke versi sebelumnya jika terjadi error, dan maintainability yang lebih baik melalui commit messages yang deskriptif.
+
+2) CI/CD Pipeline dengan GitHub Actions
+
+GitHub Actions diimplementasikan sebagai solusi CI/CD pipeline untuk mengotomatisasi proses build, test, dan deployment. Pemilihan GitHub Actions didasarkan pada beberapa pertimbangan: (1) integrasi native dengan GitHub repository tanpa memerlukan setup server tambahan, (2) dukungan untuk workflow YAML yang mudah dikonfigurasi, (3) tersedia secara gratis untuk repository publik, dan (4) ekosistem marketplace yang kaya dengan actions yang dapat digunakan kembali.
+
+Pipeline CI/CD FoodBuddy dikonfigurasi melalui file YAML di direktori .github/workflows/ yang mendefinisikan workflow otomatis. Workflow utama terdiri dari tiga stage: (1) Build stage untuk memvalidasi struktur file dan dependencies, (2) Test stage untuk menjalankan automated testing, dan (3) Deploy stage untuk deployment ke production environment. GitHub Actions memicu workflow secara otomatis pada event push ke branch main, pull request, atau manual trigger melalui GitHub Actions interface.
+
+3) Build Tools dan Dependency Management
+
+FoodBuddy sebagai aplikasi web statis menggunakan Content Delivery Network (CDN) untuk mengelola external dependencies. Library yang digunakan meliputi Marked.js (untuk parsing markdown) yang di-load melalui CDN jsDelivr, Material Icons dari Google Fonts, dan font Inter dari Google Fonts API. Meskipun tidak menggunakan package manager tradisional seperti npm atau yarn, dependency management dilakukan melalui version pinning dalam URL CDN untuk memastikan konsistensi versi library yang digunakan.
+
+Build process untuk FoodBuddy relatif sederhana karena tidak memerlukan compilation step. Namun, pipeline CI/CD melakukan validasi terhadap: (1) syntax HTML melalui HTML validator, (2) syntax JavaScript melalui ESLint atau JSHint, (3) CSS validation untuk memastikan kompatibilitas browser, dan (4) accessibility check menggunakan tools seperti Lighthouse CI untuk memastikan aplikasi memenuhi standar aksesibilitas web.
+
+4) Containerization dengan Docker
+
+Docker diimplementasikan untuk containerization aplikasi FoodBuddy, meskipun aplikasi ini adalah static web application. Pemilihan Docker didasarkan pada kebutuhan untuk: (1) memastikan konsistensi environment antara development, staging, dan production, (2) memudahkan deployment ke berbagai platform hosting, (3) isolasi dependencies dan konfigurasi, dan (4) memungkinkan horizontal scaling jika diperlukan di masa depan.
+
+Dockerfile FoodBuddy menggunakan base image nginx:alpine yang ringan dan efisien untuk serve static files. Konfigurasi Docker mencakup: (1) copy semua file aplikasi ke dalam container, (2) konfigurasi nginx untuk serve static files dengan optimasi caching, (3) expose port 80 untuk HTTP traffic, dan (4) health check configuration untuk monitoring container status. Docker image dibangun secara otomatis dalam CI/CD pipeline dan di-push ke Docker Hub atau GitHub Container Registry untuk distribusi.
+
+5) Testing Tools dan Automated Testing
+
+Testing framework yang digunakan untuk FoodBuddy mencakup beberapa kategori testing:
+
+a) Unit Testing: Meskipun aplikasi menggunakan vanilla JavaScript tanpa framework testing khusus, unit testing dilakukan melalui custom test scripts yang memvalidasi fungsi-fungsi kritis seperti weather API integration, location detection, dan chatbot response handling. Testing dilakukan menggunakan Node.js dengan framework Jest atau Mocha untuk menjalankan test cases.
+
+b) Integration Testing: Integration testing dilakukan untuk memvalidasi interaksi antara komponen aplikasi dengan external APIs (Geoapify untuk location, WeatherAPI untuk weather data, dan OpenRouter untuk AI chatbot). Testing ini menggunakan tools seperti Postman atau custom scripts untuk memverifikasi API responses dan error handling.
+
+c) End-to-End (E2E) Testing: E2E testing menggunakan Playwright atau Cypress untuk menguji user flows secara menyeluruh, termasuk interaksi dengan UI, form submission, dan responsivitas aplikasi pada berbagai device sizes. E2E tests dijalankan dalam CI/CD pipeline pada setiap pull request untuk memastikan tidak ada regression.
+
+d) Performance Testing: Lighthouse CI terintegrasi dalam pipeline untuk mengukur performance metrics seperti First Contentful Paint (FCP), Largest Contentful Paint (LCP), dan Cumulative Layout Shift (CLS). Threshold performance ditetapkan untuk memastikan aplikasi memenuhi standar Core Web Vitals.
+
+e) Accessibility Testing: Automated accessibility testing menggunakan axe-core atau Pa11y untuk memvalidasi compliance dengan WCAG 2.1 guidelines, memastikan aplikasi dapat diakses oleh users dengan disabilities.
+
+B. DevOps Pipeline Stages and Results
+
+Pipeline DevOps FoodBuddy mengikuti model continuous delivery dengan tujuh tahapan utama: Plan, Code, Build, Test, Release, Deploy, dan Monitor. Setiap tahapan memiliki aktivitas spesifik dan output yang terukur, dengan otomatisasi maksimal untuk mengurangi human error dan mempercepat time-to-market.
+
+1) Plan Stage
+
+Tahap Plan merupakan fase perencanaan yang mencakup requirement analysis, sprint planning, dan task breakdown. Aktivitas utama meliputi: (1) review user stories dan acceptance criteria melalui GitHub Issues, (2) estimasi effort menggunakan story points, (3) assignment tasks kepada team members, dan (4) definisi Definition of Done (DoD) untuk setiap task. Tools yang digunakan meliputi GitHub Projects untuk kanban board dan GitHub Milestones untuk release planning.
+
+Output dari Plan stage adalah sprint backlog yang terstruktur, issue tickets dengan labels dan assignees, dan release plan dengan target dates. Dampak terhadap proyek: peningkatan visibility terhadap progress development, better resource allocation, dan alignment antara tim development dan stakeholders melalui dokumentasi yang jelas di GitHub.
+
+2) Code Stage
+
+Tahap Code melibatkan aktivitas development aktif dimana developers menulis, modify, dan commit code changes. Aktivitas utama mencakup: (1) feature development di isolated feature branches, (2) code writing mengikuti coding standards yang telah ditetapkan, (3) local testing sebelum commit, dan (4) commit dengan descriptive commit messages mengikuti conventional commits format.
+
+Otomatisasi dalam Code stage meliputi: (1) pre-commit hooks menggunakan Husky untuk menjalankan linting dan formatting sebelum commit, (2) branch protection rules di GitHub untuk mencegah direct push ke main branch, dan (3) code quality checks menggunakan GitHub's code scanning. Output dari Code stage adalah feature branches dengan committed changes, pull requests yang siap untuk review, dan code diff yang dapat di-review oleh peers.
+
+Dampak Code stage terhadap kualitas perangkat lunak: konsistensi code style melalui automated formatting, early detection of bugs melalui pre-commit hooks, dan improved code quality melalui mandatory code review process. Kecepatan pengembangan meningkat karena developers dapat bekerja secara paralel di feature branches tanpa blocking satu sama lain.
+
+3) Build Stage
+
+Build stage dimulai ketika code changes di-push ke repository atau pull request dibuat. Aktivitas utama meliputi: (1) checkout source code dari repository, (2) dependency validation untuk memastikan semua external resources (CDN links) dapat diakses, (3) HTML/CSS/JavaScript validation, (4) Docker image building, dan (5) artifact generation untuk deployment.
+
+Otomatisasi Build stage dilakukan melalui GitHub Actions workflow yang triggered pada events push dan pull_request. Workflow menjalankan jobs secara paralel: (1) lint job untuk code quality checks, (2) build job untuk Docker image creation, dan (3) validate job untuk structure validation. Build process menggunakan matrix strategy untuk test kompatibilitas pada berbagai environment configurations.
+
+Output dari Build stage adalah: (1) build artifacts berupa Docker image yang di-push ke container registry, (2) build logs yang dapat diakses melalui GitHub Actions interface, (3) build status badges yang ditampilkan di README, dan (4) notification ke team members jika build fails. Dampak terhadap konsistensi build: setiap build dilakukan dalam clean environment yang identik, menghilangkan "works on my machine" problems, dan memastikan reproducibility.
+
+4) Test Stage
+
+Test stage merupakan fase kritis untuk memastikan kualitas perangkat lunak sebelum deployment. Aktivitas utama mencakup: (1) unit test execution untuk fungsi-fungsi JavaScript, (2) integration test untuk API interactions, (3) E2E test untuk user flows, (4) performance testing dengan Lighthouse, (5) accessibility testing, dan (6) security scanning untuk vulnerabilities.
+
+Otomatisasi Test stage dilakukan secara parallel dalam GitHub Actions dengan strategy matrix untuk test berbagai scenarios. Test jobs mencakup: (1) unit-test job yang menjalankan Jest test suite, (2) integration-test job untuk API validation, (3) e2e-test job menggunakan Playwright dalam headless browser, (4) lighthouse job untuk performance metrics, dan (5) security-scan job menggunakan GitHub's Dependabot atau Snyk.
+
+Output dari Test stage adalah: (1) test reports dengan coverage metrics, (2) performance reports dengan Core Web Vitals scores, (3) accessibility reports dengan WCAG compliance status, (4) security reports dengan vulnerability findings, dan (5) test artifacts seperti screenshots dari failed E2E tests. Test results di-publish sebagai GitHub Actions artifacts dan dapat di-download untuk detailed analysis.
+
+Dampak Test stage terhadap kualitas perangkat lunak: peningkatan confidence dalam code changes melalui comprehensive test coverage, early detection of regressions sebelum merge ke main branch, dan continuous quality improvement melalui automated quality gates. Kecepatan pengembangan meningkat karena bugs terdeteksi lebih awal, mengurangi waktu debugging di production.
+
+5) Release Stage
+
+Release stage melibatkan persiapan aplikasi untuk deployment ke production environment. Aktivitas utama meliputi: (1) version tagging menggunakan semantic versioning (semver), (2) changelog generation dari commit messages, (3) release notes creation, (4) final validation sebelum release, dan (5) approval process untuk production deployment.
+
+Otomatisasi Release stage mencakup: (1) automatic version bumping berdasarkan commit types (major/minor/patch), (2) changelog generation menggunakan conventional-changelog, (3) GitHub Release creation dengan release notes, (4) Docker image tagging dengan version numbers, dan (5) pre-release validation checklist yang harus passed sebelum release dapat dibuat.
+
+Output dari Release stage adalah: (1) GitHub Release dengan tag version (contoh: v1.2.3), (2) release notes yang menjelaskan changes dan improvements, (3) Docker image dengan specific version tag, (4) release artifacts yang siap untuk deployment, dan (5) notification ke stakeholders tentang new release availability.
+
+Dampak Release stage terhadap kolaborasi tim: improved communication melalui structured release notes, better traceability melalui version tags, dan clear rollback points jika diperlukan. Konsistensi deployment meningkat karena setiap release memiliki unique identifier dan dapat di-reproduce jika diperlukan.
+
+6) Deploy Stage
+
+Deploy stage merupakan fase dimana aplikasi di-deploy ke production environment. Untuk FoodBuddy, deployment dilakukan ke static hosting platform seperti GitHub Pages, Netlify, atau Vercel. Aktivitas utama meliputi: (1) environment configuration untuk production, (2) static files deployment, (3) Docker container deployment (jika menggunakan container-based hosting), (4) DNS configuration jika diperlukan, dan (5) post-deployment verification.
+
+Otomatisasi Deploy stage dilakukan melalui GitHub Actions dengan deployment jobs yang triggered pada release creation atau push ke main branch. Deployment strategy menggunakan blue-green deployment atau canary deployment untuk zero-downtime updates. Workflow deployment mencakup: (1) environment setup dengan secrets management, (2) file upload ke hosting platform, (3) cache invalidation untuk CDN, (4) health check verification, dan (5) rollback mechanism jika deployment fails.
+
+Output dari Deploy stage adalah: (1) deployed application yang accessible melalui production URL, (2) deployment logs dengan timestamps, (3) deployment status notification, (4) monitoring dashboard links, dan (5) rollback scripts jika diperlukan. Deployment status ditampilkan sebagai badge di repository dan notification dikirim ke team channels.
+
+Dampak Deploy stage terhadap kecepatan pengembangan: reduced deployment time dari manual process (biasanya 30-60 menit) menjadi automated process (5-10 menit), elimination of human errors dalam deployment steps, dan ability untuk deploy multiple times per day tanpa significant overhead. Konsistensi deployment meningkat karena setiap deployment menggunakan identical process dan configuration.
+
+7) Monitor Stage
+
+Monitor stage merupakan fase continuous monitoring untuk memastikan aplikasi berjalan dengan baik di production. Aktivitas utama meliputi: (1) application performance monitoring (APM), (2) error tracking dan logging, (3) user analytics, (4) uptime monitoring, (5) security monitoring, dan (6) performance metrics collection.
+
+Otomatisasi Monitor stage dilakukan melalui integration dengan monitoring tools seperti: (1) Sentry untuk error tracking dan performance monitoring, (2) Google Analytics atau Plausible untuk user analytics, (3) UptimeRobot atau Pingdom untuk uptime monitoring, (4) GitHub's built-in dependency alerts untuk security monitoring, dan (5) custom dashboards untuk real-time metrics visualization.
+
+Output dari Monitor stage adalah: (1) real-time metrics dashboard dengan key performance indicators (KPIs), (2) error reports dengan stack traces dan user context, (3) performance reports dengan response times dan throughput, (4) alert notifications untuk critical issues, dan (5) weekly/monthly reports dengan trends analysis.
+
+Dampak Monitor stage terhadap kualitas perangkat lunak: proactive issue detection sebelum users terpengaruh, data-driven decision making untuk improvements, dan continuous optimization berdasarkan real-world usage patterns. Feedback loop yang cepat memungkinkan developers untuk iterate dan improve aplikasi berdasarkan actual user behavior dan performance data.
+
+C. Dampak Penerapan DevOps secara Keseluruhan
+
+Penerapan DevOps pada proyek FoodBuddy menghasilkan dampak signifikan terhadap berbagai aspek pengembangan perangkat lunak:
+
+1) Kualitas Perangkat Lunak: Automated testing dan quality gates memastikan bahwa hanya code yang memenuhi standar kualitas yang dapat di-deploy. Test coverage yang comprehensive mengurangi bugs di production, sementara continuous monitoring memungkinkan quick response terhadap issues. Hasilnya, defect rate menurun secara signifikan dan user satisfaction meningkat.
+
+2) Kecepatan Pengembangan: Otomatisasi mengurangi waktu yang dihabiskan untuk manual tasks seperti building, testing, dan deployment. CI/CD pipeline memungkinkan developers untuk focus pada feature development daripada operational tasks. Time-to-market untuk new features berkurang dari weeks menjadi days, dan frequency of releases meningkat dari monthly menjadi weekly atau bahkan daily.
+
+3) Kolaborasi Tim: Git workflow dengan pull requests dan code reviews meningkatkan collaboration dan knowledge sharing antar team members. Transparent process melalui GitHub Projects dan automated notifications memastikan semua stakeholders aware terhadap project status. Communication overhead berkurang karena informasi tersedia secara real-time melalui dashboards dan automated reports.
+
+4) Konsistensi Build dan Deployment: Docker containerization dan automated CI/CD pipeline memastikan bahwa aplikasi yang di-deploy di production identik dengan yang di-test di development environment. Eliminasi "environment drift" mengurangi deployment-related issues. Reproducibility memungkinkan quick rollback jika diperlukan, dan confidence dalam deployment process meningkat secara signifikan.
