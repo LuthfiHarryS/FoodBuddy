@@ -14,10 +14,6 @@
 <body>
     <header role="banner" aria-label="Main header">
         <div class="logo" tabindex="0">Foodbuddy</div>
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
     </header>
 
     <main class="app-container" role="main">
@@ -34,7 +30,7 @@
                 <div class="weather-bottom">
                     <div class="weather-info">
                         <span id="status-icon" class="material-icons sun-icon" aria-hidden="true">wb_sunny</span>
-                        <span style="font-size: 38px;" id="temperature-text">32&deg;C</span>
+                        <span id="temperature-text">32&deg;C</span>
                     </div>
                     <div class="weather-desc" id="weather-description">Sunny</div>
                 </div>
@@ -52,7 +48,7 @@
                 
             </div>
             
-            <div id="chatBox" class="chat-box" role="log" aria-live="polite" style="margin-top: 20px;"></div>
+            <div id="chatBox" class="chat-box" role="log" aria-live="polite"></div>
             <p id = "tanyaRekomendasi" class="preference-prompt" tabindex="0">
                     Punya preferensi khusus? Tanya aja, aku siap bantu carikan makanan sesuai selera dan mood kamu!
                 </p>
@@ -76,45 +72,5 @@
     <footer role="contentinfo">
         <small>© 2025 Foodbuddy - All rights reserved.</small>
     </footer>
-
-    <script>
-        const hamburgerBtn = document.getElementById('hamburger-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        function toggleMobileMenu() {
-        const isExpanded = hamburgerBtn.getAttribute('aria-expanded') === 'true';
-        hamburgerBtn.setAttribute('aria-expanded', String(!isExpanded));
-        if (!isExpanded) {
-            mobileMenu.classList.add('active');
-            mobileMenu.querySelectorAll('a').forEach(link => link.tabIndex = 0);
-            mobileMenu.setAttribute('aria-hidden', 'false');
-        } else {
-            mobileMenu.classList.remove('active');
-            mobileMenu.querySelectorAll('a').forEach(link => link.tabIndex = -1);
-            mobileMenu.setAttribute('aria-hidden', 'true');
-        }
-        }
-
-        hamburgerBtn.addEventListener('click', toggleMobileMenu);
-        hamburgerBtn.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            toggleMobileMenu();
-        }
-        });
-
-        // Close mobile nav on window resize for desktop
-        window.addEventListener('resize', () => {
-        if(window.innerWidth > 767) {
-            if(mobileMenu.classList.contains('active')) {
-            mobileMenu.classList.remove('active');
-            hamburgerBtn.setAttribute('aria-expanded', 'false');
-            mobileMenu.querySelectorAll('a').forEach(link => link.tabIndex = -1);
-            mobileMenu.setAttribute('aria-hidden', 'true');
-            }
-        }
-        });
-    </script>
 </body>
 </html>
-
