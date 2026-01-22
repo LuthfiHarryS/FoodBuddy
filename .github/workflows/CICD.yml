@@ -119,7 +119,7 @@ jobs:
     name: Lighthouse Performance Test
     runs-on: ubuntu-latest
     needs: [validate-frontend, validate-backend, test]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push'
     
     steps:
       - name: Checkout code
