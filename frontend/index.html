@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Foodbuddy - Siang Recommendations</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="script.js" defer></script>
 </head>
 
 <body>
-    <header role="banner" aria-label="Main header">
+    <header aria-label="Main header">
         <div class="logo" tabindex="0">Foodbuddy</div>
     </header>
 
-    <main class="app-container" role="main">
+    <main class="app-container">
         <section class="left-panel" aria-label="Weather information panel">
             <div class="left-content" tabindex="0">
                 <div class="date-location">
-                    <span id="day-name">Selasa</span><br/>
+                    <span id="day-name">Selasa</span><br>
                     <small>
                         <span class="material-icons location-icon" aria-hidden="true">location_on</span>
                         <span id="location-text">Jakarta, INA</span>
@@ -34,6 +34,7 @@
                     </div>
                     <div class="weather-desc" id="weather-description">Sunny</div>
                 </div>
+            </div>
         </section>
 
         <section class="right-panel" aria-label="Foodbuddy recommendations and preferences">
@@ -41,18 +42,15 @@
                 <h1 id="greeting" tabindex="0">Halo, selamat siang!</h1>
                 <p id="intro-text" class="description" tabindex="0"></p>
 
-                <div id="recommendations" class="recommendations" role="list">
-                    
-                </div>
-
-                
+                <ul id="recommendations" class="recommendations">
+                </ul>
             </div>
-            
+
             <div id="chatBox" class="chat-box" role="log" aria-live="polite"></div>
-            <p id = "tanyaRekomendasi" class="preference-prompt" tabindex="0">
-                    Punya preferensi khusus? Tanya aja, aku siap bantu carikan makanan sesuai selera dan mood kamu!
-                </p>
-            <form class="input-container" role="search" aria-label="Food preference input form" onsubmit="return false;">
+            <p id="tanyaRekomendasi" class="preference-prompt" tabindex="0">
+                Punya preferensi khusus? Tanya aja, aku siap bantu carikan makanan sesuai selera dan mood kamu!
+            </p>
+            <form class="input-container" role="search" aria-label="Food preference input form">
                 <span id="input-icon" class="material-icons" aria-hidden="true"></span>
                 <input
                     type="text"
@@ -60,16 +58,15 @@
                     placeholder="Message Foodbuddy"
                     id="userInput"
                     autocomplete="off"
-                    required
-                />
-                <button class="send-btn" id="sendButton" aria-label="Send message">
+                    required>
+                <button type="submit" class="send-btn" id="sendButton" aria-label="Send message">
                     <span class="material-icons">arrow_upward</span>
                 </button>
             </form>
         </section>
     </main>
 
-    <footer role="contentinfo">
+    <footer>
         <small>© 2025 Foodbuddy - All rights reserved.</small>
     </footer>
 </body>

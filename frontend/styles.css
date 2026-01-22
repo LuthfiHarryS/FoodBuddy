@@ -152,6 +152,9 @@
         margin-bottom: 48px;
         max-width: 720px;
         flex-wrap: wrap;
+        list-style: none;
+        padding: 0;
+        margin-left: 0;
     }
 
     .recommendation-card {

@@ -93,12 +93,11 @@ const tampilkanRekomendasiManual = (waktu, cuaca) => {
     rekomendasiBox.innerHTML = '';
     const rekomendasiList = getManualRekomendasi(waktu, cuaca);
     rekomendasiList.forEach(item => {
-        const card = document.createElement('article');
-        card.className = 'recommendation-card';
-        card.setAttribute('role', 'listitem');
-        card.setAttribute('tabindex', '0');
-        card.textContent = item;
-        rekomendasiBox.appendChild(card);
+        const listItem = document.createElement('li');
+        listItem.className = 'recommendation-card';
+        listItem.setAttribute('tabindex', '0');
+        listItem.textContent = item;
+        rekomendasiBox.appendChild(listItem);
     });
 };
 
@@ -232,52 +231,62 @@ const sendButton = document.getElementById('sendButton');
 const userInput = document.getElementById('userInput');
 const initialContent = document.getElementById('initialContent');
 const tanyaRekomendasi = document.getElementById('tanyaRekomendasi');
+const inputForm = document.querySelector('.input-container');
+
+const handleSendMessage = async function(e) {
+    if (e) {
+        e.preventDefault();
+    }
+    // Hide initial content
+    if (initialContent) {
+        initialContent.style.display = 'none';
+    }
+    
+    const inputValue = userInput.value.trim();
+    if (!inputValue) {
+        alert("Input tidak boleh kosong!");
+        return;
+    }
+    
+    sendButton.disabled = true;
+    userInput.disabled = true;
+    
+    if (tanyaRekomendasi) {
+        tanyaRekomendasi.style.display = 'none';
+    }
+    
+    showMessage(inputValue, 'user-message');
+    userInput.value = '';
+    showLoadingIndicator();
+    
+    try {
+        const reply = await sendChatMessage(inputValue);
+        removeLoadingIndicator();
+        const formatted = typeof marked !== 'undefined' ? marked.parse(reply) : reply;
+        showMessage(formatted, 'bot-message');
+    } catch (error) {
+        removeLoadingIndicator();
+        console.error("Gagal:", error);
+        showMessage("Terjadi kesalahan saat menghubungi AI.", 'bot-message');
+    }
+    
+    sendButton.disabled = false;
+    userInput.disabled = false;
+    userInput.focus();
+};
 
 if (sendButton && userInput) {
-    sendButton.addEventListener('click', async function() {
-        // Hide initial content
-        if (initialContent) {
-            initialContent.style.display = 'none';
-        }
-        
-        const inputValue = userInput.value.trim();
-        if (!inputValue) {
-            alert("Input tidak boleh kosong!");
-            return;
-        }
-        
-        sendButton.disabled = true;
-        userInput.disabled = true;
-        
-        if (tanyaRekomendasi) {
-            tanyaRekomendasi.style.display = 'none';
-        }
-        
-        showMessage(inputValue, 'user-message');
-        userInput.value = '';
-        showLoadingIndicator();
-        
-        try {
-            const reply = await sendChatMessage(inputValue);
-            removeLoadingIndicator();
-            const formatted = typeof marked !== 'undefined' ? marked.parse(reply) : reply;
-            showMessage(formatted, 'bot-message');
-        } catch (error) {
-            removeLoadingIndicator();
-            console.error("Gagal:", error);
-            showMessage("Terjadi kesalahan saat menghubungi AI.", 'bot-message');
-        }
-        
-        sendButton.disabled = false;
-        userInput.disabled = false;
-        userInput.focus();
-    });
+    sendButton.addEventListener('click', handleSendMessage);
+    
+    if (inputForm) {
+        inputForm.addEventListener('submit', handleSendMessage);
+    }
     
     // Enter key handler
     userInput.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            sendButton.click();
+            handleSendMessage(e);
         }
     });
 }
