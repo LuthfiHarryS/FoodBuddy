@@ -144,7 +144,7 @@ jobs:
       - name: Run Lighthouse CI
         run: npm run lighthouse
         env:
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # Job untuk deployment
   deploy:
