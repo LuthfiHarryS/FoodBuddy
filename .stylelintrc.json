@@ -1,33 +1,25 @@
 {
   "extends": "stylelint-config-standard",
   "rules": {
-    "indentation": 4,
-    "string-quotes": "single",
-    "no-duplicate-selectors": true,
-    "color-hex-case": "lower",
-    "color-hex-length": "short",
     "color-named": "never",
-    "selector-combinator-space-after": "always",
-    "selector-attribute-quotes": "always",
-    "selector-attribute-operator-space-before": "never",
-    "selector-attribute-operator-space-after": "never",
-    "selector-attribute-brackets-space-inside": "never",
-    "declaration-colon-space-before": "never",
-    "declaration-colon-space-after": "always",
+    "color-hex-length": "short",
     "property-no-vendor-prefix": true,
     "value-no-vendor-prefix": true,
-    "number-leading-zero": "always",
-    "function-url-quotes": "always",
     "font-weight-notation": "numeric",
-    "comment-empty-line-before": "always",
-    "comment-whitespace-inside": "always",
-    "rule-empty-line-before": "always-multi-line",
-    "selector-pseudo-element-colon-notation": "double",
-    "selector-pseudo-class-parentheses-space-inside": "never",
-    "media-feature-range-operator-space-before": "always",
-    "media-feature-range-operator-space-after": "always",
-    "media-feature-parentheses-space-inside": "never",
-    "media-feature-colon-space-before": "never",
-    "media-feature-colon-space-after": "always"
+    "function-url-quotes": "always",
+    "rule-empty-line-before": [
+      "always-multi-line",
+      {
+        "except": ["first-nested"],
+        "ignore": ["after-comment", "inside-block"]
+      }
+    ],
+    "alpha-value-notation": null,
+    "color-function-notation": null,
+    "font-family-name-quotes": null,
+    "media-feature-range-notation": null,
+    "no-descending-specificity": null,
+    "selector-id-pattern": null,
+    "shorthand-property-no-redundant-values": null
   }
 }
