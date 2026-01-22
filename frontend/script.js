@@ -47,43 +47,43 @@ if (dateTextEl) dateTextEl.textContent = `${date.getDate()} ${monthNames[date.ge
 const getManualRekomendasi = (waktu, cuaca) => {
     const kunci = `${waktu}-${cuaca}`;
     const daftarRekomendasi = {
-        "pagi-cerah": [
-            "Bubur Ayam Komplit – lembut, hangat, dan penuh topping yang bikin nagih.",
-            "Roti Bakar Isi Cokelat dan Keju – lelehan isi manis-gurih yang lumer di lidah.",
-            "Susu Hangat dan Pisang – simpel, sehat, dan bikin pagi lebih bertenaga."
+        'pagi-cerah': [
+            'Bubur Ayam Komplit – lembut, hangat, dan penuh topping yang bikin nagih.',
+            'Roti Bakar Isi Cokelat dan Keju – lelehan isi manis-gurih yang lumer di lidah.',
+            'Susu Hangat dan Pisang – simpel, sehat, dan bikin pagi lebih bertenaga.'
         ],
-        "siang-cerah": [
-            "Nasi Padang Daging Rendang – pedas gurihnya menggugah semangat makan siang.",
-            "Gado-Gado – segar, kaya rasa, dan saus kacangnya nendang!",
-            "Mie Ayam Jamur – kenyal dan gurih, pas banget buat isi ulang tenaga."
+        'siang-cerah': [
+            'Nasi Padang Daging Rendang – pedas gurihnya menggugah semangat makan siang.',
+            'Gado-Gado – segar, kaya rasa, dan saus kacangnya nendang!',
+            'Mie Ayam Jamur – kenyal dan gurih, pas banget buat isi ulang tenaga.'
         ],
-        "malam-cerah": [
-            "Soto Ayam – kuah hangat dan aroma rempahnya bikin rileks.",
-            "Nasi Goreng Spesial – harum, gurih, dan selalu jadi comfort food terbaik.",
-            "Wedang Jahe & Pisang Goreng – hangat, manis, dan bikin malam makin cozy."
+        'malam-cerah': [
+            'Soto Ayam – kuah hangat dan aroma rempahnya bikin rileks.',
+            'Nasi Goreng Spesial – harum, gurih, dan selalu jadi comfort food terbaik.',
+            'Wedang Jahe & Pisang Goreng – hangat, manis, dan bikin malam makin cozy.'
         ],
-        "siang-hujan": [
-            "Bakso Urat – kenyal-kenyal mantap dengan kuah hangat menggoda.",
-            "Mie Rebus Jawa – kuah pedas gurihnya susah dilawan saat hujan.",
-            "Teh Hangat dan Tahu Isi – kriuk dan hangat yang memanjakan lidah."
+        'siang-hujan': [
+            'Bakso Urat – kenyal-kenyal mantap dengan kuah hangat menggoda.',
+            'Mie Rebus Jawa – kuah pedas gurihnya susah dilawan saat hujan.',
+            'Teh Hangat dan Tahu Isi – kriuk dan hangat yang memanjakan lidah.'
         ],
-        "malam-hujan ringan": [
-            "Sop Buntut – daging empuk dan kuah panas yang menyentuh hati.",
-            "Nasi Rawon – kaya rempah, hangat, dan bikin tidur lebih nyenyak.",
-            "Kacang Rebus & Wedang Ronde – camilan hangat yang bikin betah berlama-lama."
+        'malam-hujan ringan': [
+            'Sop Buntut – daging empuk dan kuah panas yang menyentuh hati.',
+            'Nasi Rawon – kaya rempah, hangat, dan bikin tidur lebih nyenyak.',
+            'Kacang Rebus & Wedang Ronde – camilan hangat yang bikin betah berlama-lama.'
         ],
-        "malam-hujan": [
-            "Sop Buntut – daging empuk dan kuah panas yang menyentuh hati.",
-            "Nasi Rawon – kaya rempah, hangat, dan bikin tidur lebih nyenyak.",
-            "Kacang Rebus & Wedang Ronde – camilan hangat yang bikin betah berlama-lama."
+        'malam-hujan': [
+            'Sop Buntut – daging empuk dan kuah panas yang menyentuh hati.',
+            'Nasi Rawon – kaya rempah, hangat, dan bikin tidur lebih nyenyak.',
+            'Kacang Rebus & Wedang Ronde – camilan hangat yang bikin betah berlama-lama.'
         ],
-        "default": [
-            "Nasi Telur Kecap – sederhana, cepat disiapkan, dan selalu menggugah selera.",
-            "Mie Ayam – kuah gurih, dan ayam berbumbu yang selalu jadi favorit kapan saja.",
-            "Roti Bakar Cokelat – roti garing di luar, lembut di dalam, dengan cokelat lumer."
+        'default': [
+            'Nasi Telur Kecap – sederhana, cepat disiapkan, dan selalu menggugah selera.',
+            'Mie Ayam – kuah gurih, dan ayam berbumbu yang selalu jadi favorit kapan saja.',
+            'Roti Bakar Cokelat – roti garing di luar, lembut di dalam, dengan cokelat lumer.'
         ]
     };
-    return daftarRekomendasi[kunci] || daftarRekomendasi["default"];
+    return daftarRekomendasi[kunci] || daftarRekomendasi['default'];
 };
 
 const tampilkanRekomendasiManual = (waktu, cuaca) => {
@@ -138,7 +138,7 @@ const sendChatMessage = async (message) => {
         return data.reply;
     } catch (error) {
         console.error('Chat error:', error);
-        return "Terjadi kesalahan saat menghubungi AI.";
+        return 'Terjadi kesalahan saat menghubungi AI.';
     }
 };
 
@@ -169,8 +169,8 @@ const sendChatMessage = async (message) => {
                 }
                 
                 // Update icons
-                const statusIcon = document.getElementById("status-icon");
-                const inputIcon = document.getElementById("input-icon");
+                const statusIcon = document.getElementById('status-icon');
+                const inputIcon = document.getElementById('input-icon');
                 const iconName = getTimeIcon(currentHour, weatherData.isRainy);
                 if (statusIcon) statusIcon.textContent = iconName;
                 if (inputIcon) inputIcon.textContent = iconName;
@@ -244,7 +244,7 @@ const handleSendMessage = async function(e) {
     
     const inputValue = userInput.value.trim();
     if (!inputValue) {
-        alert("Input tidak boleh kosong!");
+        alert('Input tidak boleh kosong!');
         return;
     }
     
@@ -266,8 +266,8 @@ const handleSendMessage = async function(e) {
         showMessage(formatted, 'bot-message');
     } catch (error) {
         removeLoadingIndicator();
-        console.error("Gagal:", error);
-        showMessage("Terjadi kesalahan saat menghubungi AI.", 'bot-message');
+        console.error('Gagal:', error);
+        showMessage('Terjadi kesalahan saat menghubungi AI.', 'bot-message');
     }
     
     sendButton.disabled = false;
