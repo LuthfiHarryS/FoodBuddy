@@ -2,6 +2,7 @@
     *, *::before, *::after {
         box-sizing: border-box;
     }
+
     body {
         margin: 0;
         font-family: 'Inter', sans-serif;
@@ -12,10 +13,12 @@
         display: flex;
         flex-direction: column;
     }
+
     a {
         color: inherit;
         text-decoration: none;
     }
+
     button {
         cursor: pointer;
         border: none;
@@ -43,7 +46,7 @@
         background: linear-gradient(135deg, #7bc3f6 0%, #615ee6 100%);
         position: relative;
         padding: 32px 24px 24px 32px;
-        color: white;
+        color: #fff;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -123,7 +126,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        color: #ffffff;
+        color: #fff;
         background-color: #05094e;
     }
 
@@ -203,7 +206,7 @@
         flex: 1;
         border: none;
         background: transparent;
-        color: white;
+        color: #fff;
         font-size: 1rem;
         font-weight: 500;
         outline-offset: 2px;
@@ -220,7 +223,7 @@
         width: 40px;
         height: 40px;
         border: none;
-        color: white;
+        color: #fff;
         display: grid;
         place-items: center;
         transition: background-color 0.3s ease;
@@ -233,7 +236,7 @@
     /* Header responsive - example */
     header {
         background-color: #05094e;
-        color: white;
+        color: #fff;
         padding: 12px 24px;
         font-weight: 600;
         display: flex;
@@ -265,7 +268,7 @@
     .hamburger span {
         display: block;
         height: 3px;
-        background: white;
+        background: #fff;
         border-radius: 8px;
     }
 
@@ -275,7 +278,7 @@
     }
 
     nav.desktop-nav a {
-        color: white;
+        color: #fff;
         font-weight: 600;
         text-decoration: none;
         position: relative;
@@ -310,7 +313,7 @@
     }
 
     nav.mobile-nav a {
-        color: white;
+        color: #fff;
         font-weight: 600;
         font-size: 1.1rem;
         text-decoration: none;
@@ -448,7 +451,7 @@
 .user-message {
     align-self: flex-end;
     background-color: #4e91f9;
-    color: white;
+    color: #fff;
     border-bottom-right-radius: 0;
 }
 
@@ -456,7 +459,7 @@
 .bot-message {
     align-self: flex-start;
     background-color: #e0e0e0;
-    color: black;
+    color: #000;
     border-bottom-left-radius: 0;
 }
 
