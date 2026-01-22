@@ -1,0 +1,493 @@
+    /* Reset and base */
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+    body {
+        margin: 0;
+        font-family: 'Inter', sans-serif;
+        background-color: #05094e;
+        color: #f0f3f7;
+        line-height: 1.5;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+    button {
+        cursor: pointer;
+        border: none;
+        background: none;
+        color: inherit;
+        font: inherit;
+    }
+
+    /* Layout container */
+    .app-container {
+        
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        min-height: 0;
+        max-width: 1440px;
+        margin: 0 auto;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgb(0 0 0 / 0.3);
+        background: #05094e;
+        overflow: hidden;
+    }
+
+    /* Left panel */
+    .left-panel {
+        background: linear-gradient(135deg, #7bc3f6 0%, #615ee6 100%);
+        position: relative;
+        padding: 32px 24px 24px 32px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-weight: 600;
+        border-radius: 24px 0 0 24px;
+        background-image: url("Assets/shifaaz-shamoon-sLAk1guBG90-unsplash.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        filter: brightness(0.85);
+        -webkit-border-radius: 24px 0 0 24px;
+        -moz-border-radius: 24px 0 0 24px;
+        -ms-border-radius: 24px 0 0 24px;
+        -o-border-radius: 24px 0 0 24px;
+}
+
+    .left-panel::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(123, 195, 246, 0.8) 0%, rgba(97, 94, 230, 0.8) 100%);
+        border-radius: 24px 0 0 24px;
+        z-index: 0;
+    }
+
+    .left-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .date-location {
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 4px;
+    }
+
+    .date-location small {
+        font-weight: 400;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        opacity: 0.85;
+        margin-top: 2px;
+    }
+
+    .material-icons.location-icon {
+        font-size: 18px;
+    }
+
+    .weather-bottom {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 300px;
+    }
+
+    .weather-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .material-icons.sun-icon {
+        font-size: 64px;
+        filter: drop-shadow(0 0 2px rgba(255 255 255 / 0.6));
+    }
+
+    .weather-desc {
+        font-weight: 400;
+        font-size: 1.1rem;
+        opacity: 0.9;
+        text-align: center;
+    }
+
+    /* Right panel */
+    .right-panel {
+        flex: 1;
+        overflow: hidden;
+        padding: 48px 48px 32px 64px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: #ffffff;
+        background-color: #05094e;
+    }
+
+
+    .right-panel h1 {
+        font-weight: 700;
+        font-size: 2.25rem;
+        margin-bottom: 16px;
+        max-width: 520px;
+        line-height: 1.1;
+    }
+
+    .right-panel p.description {
+        font-weight: 400;
+        font-size: 1rem;
+        max-width: 520px;
+        margin-bottom: 32px;
+        color: #d5d9f7;
+        line-height: 1.4;
+    }
+
+    /* Recommendations cards container */
+    .recommendations {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 48px;
+        max-width: 720px;
+        flex-wrap: wrap;
+    }
+
+    .recommendation-card {
+        background: rgba(255 255 255 / 0.06);
+        border-radius: 12px;
+        padding: 20px 16px;
+        font-size: 0.85rem;
+        color: #c9caeb;
+        flex: 1 1 calc(33% - 10px);
+        min-width: 180px;
+        line-height: 1.3;
+        user-select: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .recommendation-card:hover {
+        background: rgba(255 255 255 / 0.12);
+    }
+
+    /* Preference input container */
+    .preference-prompt {
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+        color: #c9caeb;
+        max-width: 720px;
+    }
+
+    .input-container {
+        display: flex;
+        max-width: 720px;
+        background-color: rgba(255 255 255 / 0.1);
+        padding: 14px 20px;
+        border-radius: 24px;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .input-container .material-icons {
+        color: #e7e7fa;
+        font-size: 24px;
+        flex-shrink: 0;
+    }
+
+    .input-container input[type="text"] {
+        flex: 1;
+        border: none;
+        background: transparent;
+        color: white;
+        font-size: 1rem;
+        font-weight: 500;
+        outline-offset: 2px;
+    }
+
+    .input-container input::placeholder {
+        color: #b3b5c6;
+        font-weight: 400;
+    }
+
+    .input-container button.send-btn {
+        background: linear-gradient(135deg, #615ee6, #7bc3f6);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        border: none;
+        color: white;
+        display: grid;
+        place-items: center;
+        transition: background-color 0.3s ease;
+    }
+
+    .input-container button.send-btn:hover {
+        background: linear-gradient(135deg, #7bc3f6, #615ee6);
+    }
+
+    /* Header responsive - example */
+    header {
+        background-color: #05094e;
+        color: white;
+        padding: 12px 24px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 1.1rem;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0 0 0 / 0.4);
+    }
+
+    header .logo {
+        font-weight: 700;
+        font-size: 1.35rem;
+        user-select: none;
+    }
+
+    /* Hamburger menu */
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 6px;
+        cursor: pointer;
+        width: 24px;
+        height: 18px;
+    }
+
+    .hamburger span {
+        display: block;
+        height: 3px;
+        background: white;
+        border-radius: 8px;
+    }
+
+    nav.desktop-nav {
+        display: flex;
+        gap: 24px;
+    }
+
+    nav.desktop-nav a {
+        color: white;
+        font-weight: 600;
+        text-decoration: none;
+        position: relative;
+        padding-bottom: 2px;
+        transition: color 0.3s ease;
+    }
+
+    nav.desktop-nav a:hover,
+    nav.desktop-nav a:focus {
+        color: #7bc3f6;
+        outline: none;
+    }
+
+    /* Mobile nav */
+    nav.mobile-nav {
+        display: none;
+        flex-direction: column;
+        gap: 20px;
+        background: #05094e;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        padding: 24px;
+        box-shadow: 0 6px 24px rgba(0 0 0 / 0.8);
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+
+    nav.mobile-nav.active {
+        display: flex;
+    }
+
+    nav.mobile-nav a {
+        color: white;
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-decoration: none;
+        outline-offset: 2px;
+    }
+
+    /* Footer */
+    footer {
+        background: #05094e;
+        padding: 16px 24px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #b3b5c6;
+        text-align: center;
+    }
+
+    /* Responsive layout adjustments */
+    @media (max-width: 767px) {
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            border-radius: 0;
+        }
+        .left-panel,
+        .right-panel {
+            border-radius: 0;
+            padding: 20px 16px;
+        }
+        .left-panel {
+            background-image: url("Assets/shifaaz-shamoon-sLAk1guBG90-unsplash.jpg");
+            background-size: cover;
+            background-position: center;
+            min-height: 320px;
+            filter: brightness(1);
+        }
+        .left-panel::before {
+            background: linear-gradient(135deg, rgba(123, 195, 246, 0.65) 0%, rgba(97, 94, 230, 0.65) 100%);
+            border-radius: 0;
+        }
+        .material-icons.sun-icon {
+            font-size: 48px;
+        }
+        .weather-info {
+            font-size: 3rem;
+            gap: 12px;
+        }
+        .right-panel {
+            padding: 24px 16px 32px 16px;
+        }
+        nav.desktop-nav {
+            display: none;
+        }
+        .hamburger {
+            display: flex;
+        }
+        nav.mobile-nav {
+            top: 56px;
+            padding: 20px 16px;
+        }
+        .recommendations {
+            flex-direction: column;
+        }
+        .recommendation-card {
+            min-width: auto;
+            flex-basis: 100%;
+        }
+        footer {
+            font-size: 0.8rem;
+            padding: 12px 16px;
+        }
+    }
+
+    @media (min-width: 1440px) {
+        .app-container {
+        max-width: 1280px;
+        }
+    }
+
+    /* Accessibility focus */
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible {
+        outline: 2px solid #7bc3f6;
+        outline-offset: 2px;
+    }
+
+    /* Scroll */
+    #chatBox {
+    max-height: 450px;
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 8px;
+    min-width: 690px;
+}
+
+/* Scrollbar khusus untuk chatBox */
+#chatBox::-webkit-scrollbar {
+    width: 8px;
+}
+
+#chatBox::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#chatBox::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2); /* warna terang transparan */
+    border-radius: 6px;
+    transition: background-color 0.3s;
+}
+
+#chatBox::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.35);
+}
+
+/* Chat container */
+.chat-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+}
+
+/* Bubble umum */
+.message {
+    max-width: 70%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+/* Bubble user di kanan */
+.user-message {
+    align-self: flex-end;
+    background-color: #4e91f9;
+    color: white;
+    border-bottom-right-radius: 0;
+}
+
+/* Bubble bot di kiri */
+.bot-message {
+    align-self: flex-start;
+    background-color: #e0e0e0;
+    color: black;
+    border-bottom-left-radius: 0;
+}
+
+/* Untuk heading */
+.chat-box h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 10px 0 5px;
+}
+
+/* Untuk list */
+.chat-box ul,
+.chat-box ol {
+    padding-left: 20px;
+    margin: 5px 0 10px;
+}
+
+.chat-box li {
+    margin-bottom: 5px;
+}
+
+/* Untuk bold */
+.chat-box strong,
+.chat-box b {
+    font-weight: 700;
+}
+
+/* Untuk paragraf */
+.chat-box p {
+    margin: 5px 0;
+    line-height: 1.5;
+}
