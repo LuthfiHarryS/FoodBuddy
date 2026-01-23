@@ -170,9 +170,12 @@ const sendChatMessage = async (message) => {
             locationTextEl.textContent = locationData.location || 'Unknown';
         }
 
+        let weatherData = null;
+        let cuacaCondition = 'cerah'; // Default cuaca
+
         // Fetch weather
         if (locationData.city) {
-            const weatherData = await fetchWeather(locationData.city);
+            weatherData = await fetchWeather(locationData.city);
             if (weatherData) {
                 // Update temperature
                 const tempEl = document.getElementById('temperature-text');
@@ -186,25 +189,33 @@ const sendChatMessage = async (message) => {
                     weatherDescEl.textContent = weatherData.condition.indonesian;
                 }
                 
-                // Update icons
-                const statusIcon = document.getElementById('status-icon');
-                const inputIcon = document.getElementById('input-icon');
-                const iconName = getTimeIcon(currentHour, weatherData.isRainy);
-                if (statusIcon) statusIcon.textContent = iconName;
-                if (inputIcon) inputIcon.textContent = iconName;
-                
-                // Update intro text
-                const introText = document.getElementById('intro-text');
-                if (introText) {
-                    introText.textContent = `Cuaca ${timeData.period} ini ${weatherData.condition.indonesian.toLowerCase()} berikut rekomendasi makananan dan minuman yang pas banget buat makanan yang cocok dinikmati ${timeData.period} hari!`;
-                }
-                
-                // Display recommendations
-                tampilkanRekomendasiManual(timeData.period, weatherData.condition.indonesian.toLowerCase());
+                cuacaCondition = weatherData.condition.indonesian.toLowerCase();
             }
         }
+
+        // Update icons (use default if weather not available)
+        const statusIcon = document.getElementById('status-icon');
+        const inputIcon = document.getElementById('input-icon');
+        const iconName = getTimeIcon(currentHour, weatherData?.isRainy || false);
+        if (statusIcon) statusIcon.textContent = iconName;
+        if (inputIcon) inputIcon.textContent = iconName;
+        
+        // Update intro text
+        const introText = document.getElementById('intro-text');
+        if (introText) {
+            if (weatherData) {
+                introText.textContent = `Cuaca ${timeData.period} ini ${cuacaCondition} berikut rekomendasi makananan dan minuman yang pas banget buat makanan yang cocok dinikmati ${timeData.period} hari!`;
+            } else {
+                introText.textContent = `Berikut rekomendasi makananan dan minuman yang pas banget buat makanan yang cocok dinikmati ${timeData.period} hari!`;
+            }
+        }
+        
+        // Display recommendations (always show, even if weather API fails)
+        tampilkanRekomendasiManual(timeData.period, cuacaCondition);
     } catch (error) {
         console.error('Initialization error:', error);
+        // Fallback: show recommendations based on time only
+        tampilkanRekomendasiManual(timeData.period, 'cerah');
     }
 })();
 
