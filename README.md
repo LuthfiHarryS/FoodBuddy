@@ -148,6 +148,23 @@ Akses aplikasi di `http://localhost:8000`
 
 ## Deployment
 
+### Automated Deployment to GitHub Pages
+
+Frontend akan otomatis di-deploy ke GitHub Pages ketika code di-push ke branch `main`.
+
+**Setup GitHub Pages:**
+1. Buka repository settings di GitHub
+2. Navigate ke **Pages** di sidebar
+3. Di bagian **Source**, pilih **GitHub Actions**
+4. Workflow akan otomatis berjalan setiap push ke `main`
+
+Aplikasi akan tersedia di: `https://luthfiharrys.github.io/FoodBuddy/`
+
+**Workflow CI/CD:**
+- Otomatis menjalankan tests dan linting
+- Deploy ke GitHub Pages hanya jika semua tests pass
+- Workflow file: `.github/workflows/deploy.yml`
+
 ### Backend Deployment
 Deploy backend ke:
 - Railway
@@ -158,8 +175,7 @@ Deploy backend ke:
 
 Jangan lupa set environment variables di platform deployment!
 
-### Frontend Deployment
-Deploy folder `frontend/` ke static hosting. Update `API_BASE_URL` di `frontend/script.js` sesuai dengan URL backend production.
+**Penting:** Setelah backend di-deploy, update `API_BASE_URL` di `frontend/script.js` dengan URL backend production Anda.
 
 ## License
 

@@ -1,8 +1,26 @@
 // FoodBuddy Frontend - Optimized JavaScript
-// API Configuration - Change this to your backend URL in production
-const API_BASE_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:3001/api' 
-    : '/api'; // Use relative path in production
+// API Configuration - Automatically detects environment
+const getApiBaseUrl = () => {
+    const hostname = window.location.hostname;
+    
+    // Development environment
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        return 'http://localhost:3001/api';
+    }
+    
+    // GitHub Pages production
+    if (hostname.includes('github.io')) {
+        // Update this with your backend production URL
+        // Example: 'https://foodbuddy-backend.railway.app/api'
+        // Or use relative path if backend is on same domain
+        return '/api'; // Will need to be updated with actual backend URL
+    }
+    
+    // Default: use relative path
+    return '/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 // Utility functions
 const getTimeOfDay = (hour) => {
