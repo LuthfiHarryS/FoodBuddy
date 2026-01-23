@@ -10,10 +10,12 @@ const getApiBaseUrl = () => {
     
     // GitHub Pages production
     if (hostname.includes('github.io')) {
-        // Update this with your backend production URL
+        // IMPORTANT: Update this with your backend production URL after deploying backend
         // Example: 'https://foodbuddy-backend.railway.app/api'
-        // Or use relative path if backend is on same domain
-        return '/api'; // Will need to be updated with actual backend URL
+        // Example: 'https://foodbuddy-backend.onrender.com/api'
+        // For now, using relative path (will fail if backend not deployed)
+        // TODO: Replace with actual backend URL after deployment
+        return '/api'; // Update this with your backend URL!
     }
     
     // Default: use relative path
@@ -120,24 +122,46 @@ const tampilkanRekomendasiManual = (waktu, cuaca) => {
 };
 
 // API Functions - Call Backend
+// Note: Backend must be deployed separately (Railway, Render, etc.) and URL configured in getApiBaseUrl()
 const fetchLocation = async () => {
     try {
-        const response = await fetch(`${API_BASE_URL}/location`);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+        
+        const response = await fetch(`${API_BASE_URL}/location`, {
+            signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        
         if (!response.ok) throw new Error('Failed to fetch location');
         return await response.json();
     } catch (error) {
-        console.error('Location error:', error);
+        // Silently handle network errors (backend may not be deployed yet)
+        if (error.name !== 'AbortError') {
+            console.warn('Location API unavailable, using default location');
+        }
         return { city: '', country: '', location: 'Unknown' };
     }
 };
 
 const fetchWeather = async (city) => {
+    if (!city) return null;
     try {
-        const response = await fetch(`${API_BASE_URL}/weather/${encodeURIComponent(city)}`);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+        
+        const response = await fetch(`${API_BASE_URL}/weather/${encodeURIComponent(city)}`, {
+            signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        
         if (!response.ok) throw new Error('Failed to fetch weather');
         return await response.json();
     } catch (error) {
-        console.error('Weather error:', error);
+        // Silently handle network errors (backend may not be deployed yet)
+        if (error.name !== 'AbortError') {
+            console.warn('Weather API unavailable, using default weather');
+        }
         return null;
     }
 };
