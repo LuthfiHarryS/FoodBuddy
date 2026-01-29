@@ -1,5 +1,7 @@
 // FoodBuddy Frontend - Optimized JavaScript
 // API Configuration - Automatically detects environment
+
+// Export functions for testing
 const getApiBaseUrl = () => {
     const hostname = window.location.hostname;
     
@@ -8,17 +10,21 @@ const getApiBaseUrl = () => {
         return 'http://localhost:3001/api';
     }
     
+    // Firebase Hosting production
+    if (hostname.includes('web.app') || hostname.includes('firebaseapp.com')) {
+        // Firebase Hosting akan otomatis route /api/* ke Cloud Functions via rewrites
+        return '/api';
+    }
+    
     // GitHub Pages production
     if (hostname.includes('github.io')) {
         // IMPORTANT: Update this with your backend production URL after deploying backend
         // Example: 'https://foodbuddy-backend.railway.app/api'
         // Example: 'https://foodbuddy-backend.onrender.com/api'
-        // For now, using relative path (will fail if backend not deployed)
-        // TODO: Replace with actual backend URL after deployment
         return '/api'; // Update this with your backend URL!
     }
     
-    // Default: use relative path
+    // Default: use relative path (untuk Firebase Hosting)
     return '/api';
 };
 
@@ -40,17 +46,34 @@ const getTimeIcon = (hour, isRainy) => {
     return 'nights_stay';
 };
 
-// Initialize time-based UI
+// Initialize time-based UI - Optimized with requestIdleCallback for non-critical updates
 const currentHour = new Date().getHours();
 const timeData = getTimeOfDay(currentHour);
 const leftPanel = document.querySelector('.left-panel');
 const greetingElement = document.getElementById('greeting');
 
-if (leftPanel) {
-    leftPanel.style.backgroundImage = `url("${timeData.bg}")`;
-}
+// Critical: Update greeting immediately
 if (greetingElement) {
     greetingElement.textContent = timeData.greeting;
+}
+
+// Non-critical: Lazy load background image
+if (leftPanel && 'requestIdleCallback' in window) {
+    requestIdleCallback(() => {
+        // Preload image before setting as background
+        const img = new Image();
+        img.src = timeData.bg;
+        img.onload = () => {
+            leftPanel.style.backgroundImage = `url("${timeData.bg}")`;
+        };
+    }, { timeout: 2000 });
+} else if (leftPanel) {
+    // Fallback for browsers without requestIdleCallback
+    const img = new Image();
+    img.src = timeData.bg;
+    img.onload = () => {
+        leftPanel.style.backgroundImage = `url("${timeData.bg}")`;
+    };
 }
 
 // Initialize date
@@ -184,69 +207,120 @@ const sendChatMessage = async (message) => {
     }
 };
 
-// Initialize weather and location
-(async () => {
-    try {
-        // Fetch location
-        const locationData = await fetchLocation();
-        const locationTextEl = document.getElementById('location-text');
-        if (locationTextEl) {
-            locationTextEl.textContent = locationData.location || 'Unknown';
-        }
+// Initialize weather and location - Optimized with requestIdleCallback
+// Critical: Show recommendations immediately
+tampilkanRekomendasiManual(timeData.period, 'cerah');
 
-        let weatherData = null;
-        let cuacaCondition = 'cerah'; // Default cuaca
-
-        // Fetch weather
-        if (locationData.city) {
-            weatherData = await fetchWeather(locationData.city);
-            if (weatherData) {
-                // Update temperature
-                const tempEl = document.getElementById('temperature-text');
-                if (tempEl) {
-                    tempEl.innerHTML = `${weatherData.temperature}&deg;C`;
-                }
-                
-                // Update weather description
-                const weatherDescEl = document.getElementById('weather-description');
-                if (weatherDescEl) {
-                    weatherDescEl.textContent = weatherData.condition.indonesian;
-                }
-                
-                cuacaCondition = weatherData.condition.indonesian.toLowerCase();
+// Non-critical: Fetch location and weather in background
+if ('requestIdleCallback' in window) {
+    requestIdleCallback(async () => {
+        try {
+            // Fetch location
+            const locationData = await fetchLocation();
+            const locationTextEl = document.getElementById('location-text');
+            if (locationTextEl) {
+                locationTextEl.textContent = locationData.location || 'Unknown';
             }
-        }
 
-        // Update icons (use default if weather not available)
-        const statusIcon = document.getElementById('status-icon');
-        const inputIcon = document.getElementById('input-icon');
-        const iconName = getTimeIcon(currentHour, weatherData?.isRainy || false);
-        if (statusIcon) statusIcon.textContent = iconName;
-        if (inputIcon) inputIcon.textContent = iconName;
-        
-        // Update intro text
-        const introText = document.getElementById('intro-text');
-        if (introText) {
-            if (weatherData) {
-                introText.textContent = `Cuaca ${timeData.period} ini ${cuacaCondition} berikut rekomendasi makananan dan minuman yang pas banget buat makanan yang cocok dinikmati ${timeData.period} hari!`;
-            } else {
-                introText.textContent = `Berikut rekomendasi makananan dan minuman yang pas banget buat makanan yang cocok dinikmati ${timeData.period} hari!`;
+            let weatherData = null;
+            let cuacaCondition = 'cerah'; // Default cuaca
+
+            // Fetch weather
+            if (locationData.city) {
+                weatherData = await fetchWeather(locationData.city);
+                if (weatherData) {
+                    // Update temperature
+                    const tempEl = document.getElementById('temperature-text');
+                    if (tempEl) {
+                        tempEl.innerHTML = `${weatherData.temperature}&deg;C`;
+                    }
+                    
+                    // Update weather description
+                    const weatherDescEl = document.getElementById('weather-description');
+                    if (weatherDescEl) {
+                        weatherDescEl.textContent = weatherData.condition.indonesian;
+                    }
+                    
+                    cuacaCondition = weatherData.condition.indonesian.toLowerCase();
+                }
             }
-        }
-        
-        // Display recommendations (always show, even if weather API fails)
-        tampilkanRekomendasiManual(timeData.period, cuacaCondition);
-    } catch (error) {
-        console.error('Initialization error:', error);
-        // Fallback: show recommendations based on time only
-        tampilkanRekomendasiManual(timeData.period, 'cerah');
-    }
-})();
 
-// Chat functionality
+            // Update icons (use default if weather not available)
+            const statusIcon = document.getElementById('status-icon');
+            const inputIcon = document.getElementById('input-icon');
+            const iconName = getTimeIcon(currentHour, weatherData?.isRainy || false);
+            if (statusIcon) statusIcon.textContent = iconName;
+            if (inputIcon) inputIcon.textContent = iconName;
+            
+            // Update intro text
+            const introText = document.getElementById('intro-text');
+            if (introText) {
+                if (weatherData) {
+                    introText.textContent = `Cuaca ${timeData.period} ini ${cuacaCondition} berikut rekomendasi makananan dan minuman yang pas banget buat makanan yang cocok dinikmati ${timeData.period} hari!`;
+                } else {
+                    introText.textContent = `Berikut rekomendasi makananan dan minuman yang pas banget buat makanan yang cocok dinikmati ${timeData.period} hari!`;
+                }
+            }
+            
+            // Update recommendations with weather data
+            tampilkanRekomendasiManual(timeData.period, cuacaCondition);
+        } catch (error) {
+            console.error('Initialization error:', error);
+            // Fallback: keep default recommendations
+        }
+    }, { timeout: 3000 });
+} else {
+    // Fallback for browsers without requestIdleCallback
+    setTimeout(async () => {
+        try {
+            const locationData = await fetchLocation();
+            const locationTextEl = document.getElementById('location-text');
+            if (locationTextEl) {
+                locationTextEl.textContent = locationData.location || 'Unknown';
+            }
+            if (locationData.city) {
+                const weatherData = await fetchWeather(locationData.city);
+                if (weatherData) {
+                    const tempEl = document.getElementById('temperature-text');
+                    if (tempEl) tempEl.innerHTML = `${weatherData.temperature}&deg;C`;
+                    const weatherDescEl = document.getElementById('weather-description');
+                    if (weatherDescEl) weatherDescEl.textContent = weatherData.condition.indonesian;
+                    tampilkanRekomendasiManual(timeData.period, weatherData.condition.indonesian.toLowerCase());
+                }
+            }
+        } catch (error) {
+            console.error('Initialization error:', error);
+        }
+    }, 100);
+}
+
+// Chat functionality - Optimized with lazy loading marked.js
 const showMessage = (message, className) => {
     const chatBox = document.getElementById('chatBox');
     if (!chatBox) return;
+    
+    // Lazy load marked.js if not loaded
+    if (typeof marked === 'undefined' && typeof window.loadMarked === 'function') {
+        window.loadMarked();
+        // Use plain text until marked.js loads
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${className}`;
+        messageDiv.textContent = message;
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        
+        // Re-format when marked.js loads
+        if (typeof window.marked === 'undefined') {
+            const checkMarked = setInterval(() => {
+                if (typeof marked !== 'undefined') {
+                    clearInterval(checkMarked);
+                    messageDiv.innerHTML = marked.parse(message);
+                }
+            }, 100);
+            setTimeout(() => clearInterval(checkMarked), 5000);
+        }
+        return;
+    }
     
     const formattedMessage = typeof marked !== 'undefined' ? marked.parse(message) : message;
     const messageDiv = document.createElement('div');
@@ -313,10 +387,29 @@ const handleSendMessage = async function(e) {
     showLoadingIndicator();
     
     try {
+        // Ensure marked.js is loaded before sending message
+        if (typeof marked === 'undefined' && typeof window.loadMarked === 'function') {
+            window.loadMarked();
+        }
+        
         const reply = await sendChatMessage(inputValue);
         removeLoadingIndicator();
-        const formatted = typeof marked !== 'undefined' ? marked.parse(reply) : reply;
-        showMessage(formatted, 'bot-message');
+        
+        // Format reply - wait for marked.js if needed
+        if (typeof marked !== 'undefined') {
+            showMessage(marked.parse(reply), 'bot-message');
+        } else {
+            // Wait for marked.js to load (max 2 seconds)
+            let attempts = 0;
+            const checkMarked = setInterval(() => {
+                attempts++;
+                if (typeof marked !== 'undefined' || attempts > 20) {
+                    clearInterval(checkMarked);
+                    const formatted = typeof marked !== 'undefined' ? marked.parse(reply) : reply;
+                    showMessage(formatted, 'bot-message');
+                }
+            }, 100);
+        }
     } catch (error) {
         removeLoadingIndicator();
         console.error('Gagal:', error);
@@ -326,6 +419,23 @@ const handleSendMessage = async function(e) {
     sendButton.disabled = false;
     userInput.disabled = false;
     userInput.focus();
+}
+
+// Export functions for unit testing (CommonJS)
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    getApiBaseUrl,
+    getTimeOfDay,
+    getTimeIcon,
+    getManualRekomendasi,
+    tampilkanRekomendasiManual,
+    fetchLocation,
+    fetchWeather,
+    sendChatMessage,
+    showMessage,
+    showLoadingIndicator,
+    removeLoadingIndicator
+  };
 };
 
 if (sendButton && userInput) {
