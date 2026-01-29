@@ -419,24 +419,26 @@ const handleSendMessage = async function(e) {
     sendButton.disabled = false;
     userInput.disabled = false;
     userInput.focus();
-}
+};
 
 // Export functions for unit testing (CommonJS)
+/* eslint-env node */
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    getApiBaseUrl,
-    getTimeOfDay,
-    getTimeIcon,
-    getManualRekomendasi,
-    tampilkanRekomendasiManual,
-    fetchLocation,
-    fetchWeather,
-    sendChatMessage,
-    showMessage,
-    showLoadingIndicator,
-    removeLoadingIndicator
-  };
-};
+    // eslint-disable-next-line no-undef
+    module.exports = {
+        getApiBaseUrl,
+        getTimeOfDay,
+        getTimeIcon,
+        getManualRekomendasi,
+        tampilkanRekomendasiManual,
+        fetchLocation,
+        fetchWeather,
+        sendChatMessage,
+        showMessage,
+        showLoadingIndicator,
+        removeLoadingIndicator
+    };
+}
 
 if (sendButton && userInput) {
     sendButton.addEventListener('click', handleSendMessage);
